@@ -1,25 +1,40 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { CompanyContextService } from '../../core/company/company-context.service';
-import { AppHeaderComponent } from '../../layout/app-header.component';
+import { Company } from '../../core/company/company.models';
+import { AppShellComponent } from '../../layout/app-shell.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AppHeaderComponent, RouterLink],
+  imports: [AppShellComponent, RouterLink, DatePipe],
   template: `
-    <app-header />
-    <main class="page-body">
-      <section class="card">
-        <h1>Dashboard</h1>
-        <p class="lede">Signed in as {{ user()?.name }}.</p>
+    <app-shell title="Dashboard" [crumbs]="[{ label: 'Dashboard' }]">
+      <div class="page narrow">
         @if (company(); as current) {
-          <p><strong>{{ current.name }}</strong></p>
-          <p class="muted">Your role is {{ current.role }}.</p>
+          <section class="panel workspace">
+            <p class="eyebrow">Current company</p>
+            <div class="workspace-title">
+              <h2>{{ current.name }}</h2>
+              <span class="badge" [attr.data-role]="current.role">{{ roleLabel(current.role) }}</span>
+            </div>
+            <p class="lede">Signed in as {{ user()?.name }}.</p>
+            <dl class="meta">
+              <div>
+                <dt>Email</dt>
+                <dd>{{ user()?.email }}</dd>
+              </div>
+              <div>
+                <dt>Created</dt>
+                <dd class="num">{{ current.createdAt | date: 'mediumDate' }}</dd>
+              </div>
+            </dl>
+            <a class="btn btn-secondary" routerLink="/companies">Switch company</a>
+          </section>
         }
-        <p><a routerLink="/companies">Switch company</a></p>
-      </section>
-    </main>
+      </div>
+    </app-shell>
   `,
 })
 export class DashboardComponent {
@@ -27,4 +42,17 @@ export class DashboardComponent {
   private readonly companies = inject(CompanyContextService);
   readonly user = this.auth.user;
   readonly company = this.companies.selected;
+
+  roleLabel(role: Company['role']): string {
+    switch (role) {
+      case 'OWNER':
+        return 'Owner';
+      case 'ADMIN':
+        return 'Admin';
+      case 'MANAGER':
+        return 'Manager';
+      case 'EMPLOYEE':
+        return 'Employee';
+    }
+  }
 }

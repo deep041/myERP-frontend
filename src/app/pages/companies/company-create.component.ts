@@ -1,32 +1,52 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AppHeaderComponent } from '../../layout/app-header.component';
 import { CompanyContextService } from '../../core/company/company-context.service';
 import { CompanyService } from '../../core/company/company.service';
+import { AppShellComponent } from '../../layout/app-shell.component';
 
 @Component({
   selector: 'app-company-create',
-  imports: [ReactiveFormsModule, AppHeaderComponent, RouterLink],
+  imports: [ReactiveFormsModule, AppShellComponent, RouterLink],
   template: `
-    <app-header />
-    <main class="page-body">
-      <form class="card" [formGroup]="form" (ngSubmit)="submit()">
-        <h1>New company</h1>
-        <p class="lede">You will be the owner of this company.</p>
-        <div class="field">
-          <label for="name">Company name</label>
-          <input id="name" type="text" formControlName="name" />
-        </div>
-        @if (errorMessage) {
-          <p class="form-error">{{ errorMessage }}</p>
-        }
-        <div class="actions">
-          <button type="submit" [disabled]="form.invalid || submitting">Create company</button>
-          <a routerLink="/companies">Cancel</a>
-        </div>
-      </form>
-    </main>
+    <app-shell
+      title="New company"
+      [crumbs]="[
+        { label: 'Companies', href: '/companies' },
+        { label: 'New company' },
+      ]"
+    >
+      <div class="page narrow">
+        <form class="panel" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <p class="eyebrow">Company setup</p>
+          <h2>Name the company</h2>
+          <p class="lede">You will be the owner. You can open it from the company list after it is created.</p>
+
+          <div class="field" [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid">
+            <label for="company-name">Company name</label>
+            <input id="company-name" type="text" formControlName="name" autocomplete="organization" maxlength="120" />
+            <p class="field-hint">Shown to everyone who belongs to this company.</p>
+            @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+              <p class="field-error">Enter a company name.</p>
+            }
+            @if (form.controls.name.touched && form.controls.name.hasError('maxlength')) {
+              <p class="field-error">Use 120 characters or fewer.</p>
+            }
+          </div>
+
+          @if (errorMessage) {
+            <p class="form-error" role="alert">{{ errorMessage }}</p>
+          }
+
+          <div class="form-actions">
+            <a class="btn btn-secondary" routerLink="/companies">Cancel</a>
+            <button class="btn btn-primary" type="submit" [disabled]="form.invalid || submitting">
+              {{ submitting ? 'Creating…' : 'Create company' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-shell>
   `,
 })
 export class CompanyCreateComponent {
@@ -44,6 +64,7 @@ export class CompanyCreateComponent {
 
   submit(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
     this.submitting = true;
