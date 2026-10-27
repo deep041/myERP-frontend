@@ -150,6 +150,17 @@ app-icon svg { width: 18px; height: 18px; }
   text-decoration: none;
   font-weight: 600;
   letter-spacing: -0.02em;
+  min-width: 0;
+}
+
+.brand-lockup { display: flex; flex-direction: column; min-width: 0; }
+
+.brand-tagline {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 450;
+  letter-spacing: 0;
+  line-height: 1.3;
 }
 
 .btn {
@@ -275,7 +286,7 @@ input[type='checkbox'] {
 
 .auth-copy { margin-top: auto; margin-bottom: auto; }
 
-.auth-copy h2 { max-width: 16ch; }
+.auth-copy h2 { max-width: 20ch; }
 
 .auth-copy p { margin-top: 12px; color: var(--text-secondary); max-width: 34ch; }
 
@@ -362,6 +373,7 @@ input[type='checkbox'] {
 .collapse-btn { display: inline-grid; }
 
 .shell.is-collapsed .brand-name,
+.shell.is-collapsed .brand-tagline,
 .shell.is-collapsed .nav-label,
 .shell.is-collapsed .sidebar a span { display: none; }
 
@@ -661,6 +673,7 @@ dd { margin: 2px 0 0; font-weight: 550; }
 
   .collapse-btn { display: none; }
   .shell.is-collapsed .brand-name,
+  .shell.is-collapsed .brand-tagline,
   .shell.is-collapsed .nav-label,
   .shell.is-collapsed .sidebar a span { display: initial; }
   .shell.is-collapsed .sidebar a,

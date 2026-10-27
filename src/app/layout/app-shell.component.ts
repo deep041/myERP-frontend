@@ -23,8 +23,11 @@ export interface ShellCrumb {
       <aside class="sidebar" id="app-nav">
         <div class="sidebar-brand">
           <a class="brand" routerLink="/companies">
-            <span class="mark" aria-hidden="true">E</span>
-            <span class="brand-name">ERP</span>
+            <span class="mark" aria-hidden="true">N</span>
+            <span class="brand-lockup">
+              <span class="brand-name">ERPNova</span>
+              <span class="brand-tagline">Smarter Business. Simplified.</span>
+            </span>
           </a>
         </div>
         <p class="nav-label">Workspace</p>

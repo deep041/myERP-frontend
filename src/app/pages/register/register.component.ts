@@ -12,12 +12,12 @@ import { ThemeToggleComponent } from '../../layout/theme-toggle.component';
     <div class="auth">
       <aside class="auth-aside">
         <a class="brand" routerLink="/login">
-          <span class="mark" aria-hidden="true">E</span>
-          <span class="brand-name">ERP</span>
+          <span class="mark" aria-hidden="true">N</span>
+          <span class="brand-name">ERPNova</span>
         </a>
         <div class="auth-copy">
-          <h2>Create your account, then add a company.</h2>
-          <p>You can belong to more than one company. Each company keeps its own workspace.</p>
+          <h2>Smarter Business. Simplified.</h2>
+          <p>Create your account, then add a company. You can belong to more than one company.</p>
         </div>
       </aside>
       <main id="main" class="auth-main">
